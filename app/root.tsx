@@ -27,12 +27,12 @@ export const links: LinksFunction = () => [
 
 export default function App() {
   return (
-    <html lang="en" className="dark-theme">
+    <html lang="en" className="dark-theme h-full bg-gray-1">
       <head>
         <Meta />
         <Links />
       </head>
-      <body className="bg-gray-1">
+      <body className="h-full">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
