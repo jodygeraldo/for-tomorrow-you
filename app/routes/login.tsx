@@ -1,5 +1,5 @@
 import { Form, useActionData, useTransition } from 'remix'
-import { LoginContainer } from '~/components/LoginContainer'
+import LoginContainer from '~/components/LoginContainer'
 
 export default function LoginPage() {
   const actionData = useActionData() as any
