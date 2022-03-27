@@ -1,13 +1,42 @@
 import { Form, Link, Outlet, redirect } from 'remix'
 import type { LoaderFunction } from 'remix'
 import Tabs from '~/components/Tabs'
-import { requireUser } from '~/utils/auth.server'
+import { requireUser, setUser } from '~/utils/auth.server'
+import { sb } from '~/utils/supabase.server'
+import invariant from 'tiny-invariant'
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
 
   if (!user) {
     return redirect('/login')
+  }
+
+  const now = new Date().getTime()
+
+  if (user.expiresIn > now) {
+    const { data, error } = await sb.auth.api.refreshAccessToken(
+      user.refreshToken,
+    )
+
+    if (error) {
+      return redirect('/login')
+    }
+
+    invariant(data, 'should never happen')
+    invariant(data.refresh_token, 'should never happen')
+    invariant(data.expires_in, 'should never happen')
+
+    return setUser(
+      request,
+      {
+        id: user.id,
+        accessToken: data.access_token,
+        refreshToken: data.refresh_token,
+        expiresIn: now + data.expires_in,
+      },
+      '/',
+    )
   }
 
   return null

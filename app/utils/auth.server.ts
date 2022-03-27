@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from 'remix'
+import { createCookieSessionStorage, redirect } from 'remix'
 import invariant from 'tiny-invariant'
 
 invariant(process.env.AUTH_COOKIE_SECRET, 'AUTH_COOKIE_SECRET is not set')
@@ -36,4 +36,20 @@ export async function requireUser(request: Request) {
   const user: UserData | undefined = session.get('user')
 
   return user
+}
+
+export async function setUser(
+  request: Request,
+  user: UserData,
+  redirectTo: string,
+) {
+  const session = await getSession(request.headers.get('Cookie'))
+
+  session.set('user', user)
+
+  return redirect(redirectTo, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  })
 }
