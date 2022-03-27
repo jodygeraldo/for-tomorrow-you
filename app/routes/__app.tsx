@@ -1,5 +1,17 @@
-import { Outlet } from 'remix'
+import { Outlet, redirect } from 'remix'
+import type { LoaderFunction } from 'remix'
 import Tabs from '~/components/Tabs'
+import { requireUser } from '~/utils/auth.server'
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request)
+
+  if (!user) {
+    return redirect('/login')
+  }
+
+  return null
+}
 
 export default function AppLayout() {
   return (
