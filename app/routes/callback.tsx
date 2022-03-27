@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { redirect, useLocation, useSubmit } from 'remix'
+import { useLocation, useSubmit } from 'remix'
 import type { ActionFunction } from 'remix'
 import invariant from 'tiny-invariant'
-import { commitSession, getSession } from '~/utils/auth.server'
+import { setUser } from '~/utils/auth.server'
 import { sb } from '~/utils/supabase.server'
 
 export const action: ActionFunction = async ({ request }) => {
@@ -23,6 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
       throw new Error(error.message)
     }
 
+    invariant(user, 'should never happen')
     const refreshToken = hashObj.find((item) =>
       item.startsWith('refresh_token='),
     )
@@ -33,19 +34,16 @@ export const action: ActionFunction = async ({ request }) => {
     )
     invariant(typeof expiresIn === 'string', 'expiresIn should be defined')
 
-    const session = await getSession(request.headers.get('Cookie'))
-    session.set('user', {
-      id: user?.id,
-      accessToken,
-      refreshToken,
-      expiresIn: new Date().getTime() + Number(expiresIn),
-    })
-
-    return redirect('/', {
-      headers: {
-        'Set-Cookie': await commitSession(session),
+    return setUser(
+      request,
+      {
+        id: user.id,
+        accessToken,
+        refreshToken,
+        expiresIn: new Date().getTime() + Number(expiresIn),
       },
-    })
+      '/',
+    )
   } else {
     throw new Error('Invalid access token')
   }
