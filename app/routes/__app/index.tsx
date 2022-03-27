@@ -1,5 +1,18 @@
 import ButtonGroup from '~/components/ButtonGroup'
 import Card from '~/components/Card'
+import { redirect } from 'remix'
+import type { LoaderFunction } from 'remix'
+import { requireUser } from '~/utils/auth.server'
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request)
+
+  if (!user) {
+    return redirect('/login')
+  }
+
+  return null
+}
 
 export default function Index() {
   return (
