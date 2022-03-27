@@ -5,12 +5,11 @@
   "license": "",
   "sideEffects": false,
   "scripts": {
-    "generate:css:light": "tailwindcss -i ./app/styles/tailwind.css -o ./app/tailwind.css",
-    "generate:css:dark": "tailwindcss -i ./app/styles/dark.css -o ./app/dark-theme.css",
-    "build:css": "yarn generate:css:light -- --minify && yarn generate:css:dark -- --minify",
+    "generate:css": "tailwindcss -i ./app/styles/tailwind.css -o ./app/tailwind.css",
+    "build:css": "yarn generate:css -- --minify",
     "build:remix": "remix build",
     "build": "yarn run-s build:*",
-    "dev:css": "yarn generate:css:light -- --watch && yarn generate:css:dark -- --watch",
+    "dev:css": "yarn generate:css -- --watch",
     "dev:remix": "remix dev",
     "dev": "dotenv -e .env yarn run-p dev:*",
     "postinstall": "remix setup node"
