@@ -30,7 +30,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const now = new Date().getTime()
 
-  const notesMap = data.filter((note) => note.expires_at < now)
+  const notesMap = data.filter(
+    (note) => note.expires_at < now || note.done === true,
+  )
   console.log(notesMap)
 
   const notes = notesMap.map((note) => {
