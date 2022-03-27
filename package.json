@@ -12,7 +12,7 @@
     "build": "pnpm run-s build:*",
     "dev:css": "pnpm generate:css:light -- --watch && pnpm generate:css:dark -- --watch",
     "dev:remix": "remix dev",
-    "dev": "pnpm run-p dev:*",
+    "dev": "dotenv -e .env pnpm run-p dev:*",
     "postinstall": "remix setup node"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "autoprefixer": "^10.4.4",
+    "dotenv-cli": "^5.1.0",
     "eslint": "^8.11.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.12",

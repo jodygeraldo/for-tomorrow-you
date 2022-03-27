@@ -12,6 +12,7 @@ specifiers:
   '@types/react-dom': ^17.0.9
   autoprefixer: ^10.4.4
   clsx: ^1.1.1
+  dotenv-cli: ^5.1.0
   eslint: ^8.11.0
   npm-run-all: ^4.1.5
   postcss: ^8.4.12
@@ -42,6 +43,7 @@ devDependencies:
   '@types/react': 17.0.43
   '@types/react-dom': 17.0.14
   autoprefixer: 10.4.4_postcss@8.4.12
+  dotenv-cli: 5.1.0
   eslint: 8.12.0
   npm-run-all: 4.1.5
   postcss: 8.4.12
@@ -1942,6 +1944,21 @@ packages:
 
   /dom-accessibility-api/0.5.13:
     resolution: {integrity: sha512-R305kwb5CcMDIpSHUnLyIAp7SrSPBx6F0VfQFB3M75xVMHhXJJIdePYgbPPh1o57vCHNu5QztokWUPsLjWzFqw==}
+    dev: true
+
+  /dotenv-cli/5.1.0:
+    resolution: {integrity: sha512-NoEZAlKo9WVrG0b3i9mBxdD6INdDuGqdgR74t68t8084QcI077/1MnPerRW1odl+9uULhcdnQp2U0pYVppKHOA==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.0.0
+      dotenv-expand: 8.0.3
+      minimist: 1.2.6
+    dev: true
+
+  /dotenv-expand/8.0.3:
+    resolution: {integrity: sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==}
+    engines: {node: '>=12'}
     dev: true
 
   /dotenv/16.0.0:
