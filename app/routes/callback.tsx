@@ -65,8 +65,8 @@ export default function AuthCallbackPage() {
 
   return (
     <div>
-      <h1>You will be redirected shortly.</h1>
-      <noscript className="max-w-lg">
+      <h1 className="text-primary-12">You will be redirected shortly.</h1>
+      <noscript className="max-w-lg text-primary-11">
         If you see this message, it's mean you have javascript disabled, please
         enable your javascript because it's require to get the correct login
         information
