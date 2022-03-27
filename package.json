@@ -7,12 +7,12 @@
   "scripts": {
     "generate:css:light": "tailwindcss -i ./app/styles/tailwind.css -o ./app/tailwind.css",
     "generate:css:dark": "tailwindcss -i ./app/styles/dark.css -o ./app/dark-theme.css",
-    "build:css": "pnpm generate:css:light -- --minify && pnpm generate:css:dark -- --minify",
+    "build:css": "yarn generate:css:light -- --minify && yarn generate:css:dark -- --minify",
     "build:remix": "remix build",
-    "build": "pnpm run-s build:*",
-    "dev:css": "pnpm generate:css:light -- --watch && pnpm generate:css:dark -- --watch",
+    "build": "yarn run-s build:*",
+    "dev:css": "yarn generate:css:light -- --watch && yarn generate:css:dark -- --watch",
     "dev:remix": "remix dev",
-    "dev": "dotenv -e .env pnpm run-p dev:*",
+    "dev": "dotenv -e .env yarn run-p dev:*",
     "postinstall": "remix setup node"
   },
   "dependencies": {
