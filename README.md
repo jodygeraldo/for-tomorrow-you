@@ -1,34 +1,29 @@
-# Welcome to Remix!
+# For Tomorrow You
 
-- [Remix Docs](https://remix.run/docs)
+Just another note app
 
-## Deployment
+## Tech
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
+- [Remix](http://remix.run/)
+- [Supabase](https://supabase.com/)
+- [Vercel](https://vercel.com/)
 
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
+## What it's include
 
-```sh
-npm i -g vercel
-vercel
-```
+- Sign in with magic link powered by [supabase](https://supabase.com/)
+- Add note for 24 hours
+- Delete note
+- Finish note, will throw the note to logs (if 24 hours is gone the note is also thrown to logs)
 
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
+### Magic Link
 
-## Development
+I'm quiet happy with the magic link implementation here.
 
-To run your Remix app locally, make sure your project's local dependencies are installed:
-
-```sh
-npm install
-```
-
-Afterwards, start the Remix development server like so:
-
-```sh
-npm run dev
-```
-
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
-
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+Here related links:
+- [.env](https://github.com/jodygeraldo/for-tomorrow-you/blob/main/.env.example)
+- [Supabase client](https://github.com/jodygeraldo/for-tomorrow-you/blob/main/app/utils/supabase.server.ts)
+- [Cookies and helper functions](https://github.com/jodygeraldo/for-tomorrow-you/blob/main/app/utils/auth.server.ts)
+- [The login route](https://github.com/jodygeraldo/for-tomorrow-you/blob/main/app/routes/login.tsx)
+- [The callback route](https://github.com/jodygeraldo/for-tomorrow-you/blob/main/app/routes/callback.tsx)
+- [The logout route](https://github.com/jodygeraldo/for-tomorrow-you/blob/main/app/routes/logout.tsx)
+- [Refresh access_token](https://github.com/jodygeraldo/for-tomorrow-you/blob/2b9c88cf2dd259f482c7fef4a701952dcf73ed0f/app/routes/__app.tsx#L8)
