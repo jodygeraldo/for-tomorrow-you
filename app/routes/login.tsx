@@ -1,13 +1,65 @@
-import { Form, useActionData, useTransition } from 'remix'
+import {
+  Form,
+  json,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from 'remix'
+import type { LoaderFunction, ActionFunction } from 'remix'
 import LoginContainer from '~/components/LoginContainer'
+import { getUserId } from '~/utils/auth.server'
+import { sb } from '~/utils/supabase.server'
+import invariant from 'tiny-invariant'
+
+interface ActionData {
+  status: 'error' | 'success'
+  message?: string
+  email?: string
+}
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData()
+  const email = formData.get('email')
+  const redirectTo = formData.get('redirectTo')
+
+  if (typeof email !== 'string') {
+    return json<ActionData>({ status: 'error', message: 'Invalid email' }, 400)
+  }
+
+  invariant(typeof redirectTo === 'string', 'redirectTo should be defined')
+  const { error } = await sb.auth.signIn(
+    {
+      email,
+    },
+    { redirectTo },
+  )
+
+  if (error) {
+    throw new Error(error.message)
+  } else {
+    return json<ActionData>({ status: 'success', email }, 200)
+  }
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const redirectTo = new URL(request.url).searchParams.get('redirectTo')
+  const user = await getUserId(request)
+
+  if (user) {
+    return redirect('/')
+  }
+
+  return redirectTo ?? '/'
+}
 
 export default function LoginPage() {
-  const actionData = useActionData() as any
+  const actionData = useActionData<ActionData>()
+  const redirectTo = useLoaderData()
   const transition = useTransition()
 
   const busy = transition.state === 'submitting'
 
-  if (actionData?.success) {
+  if (actionData?.status === 'success' && actionData.email) {
     return (
       <LoginContainer>
         <div className="mt-6 text-center">
@@ -26,7 +78,9 @@ export default function LoginPage() {
               clipRule="evenodd"
             ></path>
           </svg>
-          <p className="text-gray-11 mt-1">Magic Link has been sent</p>
+          <p className="text-gray-11 mt-1">
+            Magic Link has been sent {actionData.email}
+          </p>
         </div>
       </LoginContainer>
     )
@@ -36,6 +90,8 @@ export default function LoginPage() {
     <LoginContainer>
       <Form method="post" className="mt-8">
         <fieldset disabled={busy} className="space-y-6">
+          <input type="hidden" name="redirectTo" value={redirectTo} />
+
           <div>
             <label htmlFor="email" className="sr-only">
               Email address
@@ -51,6 +107,11 @@ export default function LoginPage() {
                 className="appearance-none block w-full px-3 py-2 border border-gray-7 rounded-md shadow-sm placeholder-gray-11 focus:outline-none focus:ring-primary-8 focus:border-primary-8 sm:text-sm bg-gray-2 text-gray-12 disabled:bg-gray-7 disabled:cursor-not-allowed"
               />
             </div>
+            {actionData?.message ? (
+              <p className="mt-2 text-sm text-red-600" id="email-error">
+                {actionData.message}
+              </p>
+            ) : null}
           </div>
 
           <div>
