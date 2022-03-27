@@ -1,7 +1,19 @@
-export default function ButtonGroup() {
+import { Form } from 'remix'
+import { NoteAction } from '~/routes/__app/index'
+
+export default function ButtonGroup({ id }: { id: number }) {
   return (
-    <div className="flex-1 space-x-2 flex items-start justify-end">
-      <button className="group p-2 border border-gray-7 focus:outline-none focus:ring-2 focus:ring-gray-8 focus:border-gray-8 focus:ring-offset-2 focus:ring-offset-gray-3 hover:border-gray-8 rounded-full">
+    <Form
+      method="post"
+      replace={true}
+      className="flex-1 space-x-2 flex items-start justify-end"
+    >
+      <input type="hidden" name="id" value={id} />
+      <button
+        name="action"
+        value={NoteAction.FINISH}
+        className="group p-2 border border-gray-7 focus:outline-none focus:ring-2 focus:ring-gray-8 focus:border-gray-8 focus:ring-offset-2 focus:ring-offset-gray-3 hover:border-gray-8 rounded-full"
+      >
         <svg
           width="15"
           height="15"
@@ -18,7 +30,11 @@ export default function ButtonGroup() {
           ></path>
         </svg>
       </button>
-      <button className="group p-2 border border-gray-7 focus:outline-none focus:ring-2 focus:ring-gray-8 focus:border-gray-8 focus:ring-offset-2 focus:ring-offset-gray-3 hover:border-gray-8 rounded-full">
+      <button
+        name="action"
+        value={NoteAction.DELETE}
+        className="group p-2 border border-gray-7 focus:outline-none focus:ring-2 focus:ring-gray-8 focus:border-gray-8 focus:ring-offset-2 focus:ring-offset-gray-3 hover:border-gray-8 rounded-full"
+      >
         <svg
           width="15"
           height="15"
@@ -35,6 +51,6 @@ export default function ButtonGroup() {
           ></path>
         </svg>
       </button>
-    </div>
+    </Form>
   )
 }
