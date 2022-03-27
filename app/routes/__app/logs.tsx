@@ -33,7 +33,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const notesMap = data.filter(
     (note) => note.expires_at < now || note.done === true,
   )
-  console.log(notesMap)
 
   const notes = notesMap.map((note) => {
     return {
