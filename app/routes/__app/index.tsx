@@ -69,7 +69,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     return redirect('/login')
   }
 
-  const { error, data } = await sb.from<Notes>('notes').select('*')
+  const { error, data } = await sb
+    .from<Notes>('notes')
+    .select('*')
+    .eq('user_id', user.id)
 
   if (error) {
     console.log(error)
@@ -106,10 +109,10 @@ export default function Index() {
 
   return notes.map((note) => (
     <Card key={note.id} note={note.note}>
-      <div className="flex flex-col gap-2 min-w-fit">
+      <div className="flex min-w-fit flex-col gap-2">
         <ButtonGroup id={note.id} />
         <time
-          className="text-gray-11 text-sm self-end"
+          className="self-end text-sm text-gray-11"
           dateTime={note.expiresAt}
         >
           {note.expiresAtFormatted}
