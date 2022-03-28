@@ -10,4 +10,3 @@ node_modules
 /api/index.js
 
 /app/tailwind.css
-/app/dark-theme.css
