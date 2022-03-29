@@ -3,9 +3,8 @@ import Card from '~/components/Card'
 import { json, redirect, useLoaderData } from 'remix'
 import type { LoaderFunction, ActionFunction } from 'remix'
 import { requireUser } from '~/utils/auth.server'
-import { sb } from '~/utils/supabase.server'
-import { Notes } from '~/utils/types.server'
 import invariant from 'tiny-invariant'
+import { deleteNote, getNotes, setFinishNote } from '~/utils/db.server'
 
 export enum NoteAction {
   DELETE = 'DELETE',
@@ -27,32 +26,15 @@ export const action: ActionFunction = async ({ request }) => {
 
   switch (action) {
     case NoteAction.FINISH:
-      const { error: errorFinish } = await sb
-        .from<Notes>('notes')
-        .update({ done: true })
-        .eq('user_id', user.id)
-        .eq('id', id)
+      await setFinishNote(user.id, id)
 
-      if (errorFinish) {
-        return json({ error: errorFinish.message }, 500)
-      }
-
-      return json({ success: true })
-
+      return new Response(null, { status: 204 })
     case NoteAction.DELETE:
-      const { error: errorDelete } = await sb
-        .from('notes')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('id', id)
+      await deleteNote(user.id, id)
 
-      if (errorDelete) {
-        return json({ error: errorDelete.message }, 500)
-      }
-
-      return json({ success: true })
+      return new Response(null, { status: 204 })
     default:
-      return null
+      throw new Error('Invalid action')
   }
 }
 
@@ -69,37 +51,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     return redirect('/login')
   }
 
-  const { error, data } = await sb
-    .from<Notes>('notes')
-    .select('*')
-    .eq('user_id', user.id)
-
-  if (error) {
-    console.log(error)
-    return json({ error: 'error' })
-  }
-
-  invariant(data, 'data should be an array')
-
-  const now = new Date().getTime()
-
-  const notesMap = data.filter(
-    (note) =>
-      note.expires_at > now && (note.done === null || note.done === false),
-  )
-
-  const notes = notesMap.map((note) => {
-    return {
-      id: note.id,
-      note: note.notes,
-      expiresAt: `${new Date(note.expires_at)}`,
-      expiresAtFormatted: Intl.DateTimeFormat(undefined, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }).format(new Date(note.expires_at)),
-    }
-  })
+  const notes = await getNotes(user.id)
 
   return json<LoaderData>(notes, 200)
 }
