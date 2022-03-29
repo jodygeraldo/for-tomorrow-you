@@ -123,3 +123,13 @@ export async function deleteNote(userId: string, noteId: string) {
     userId: data.user_id,
   }
 }
+
+export async function deleteNotes(userId: string) {
+  const { error, data } = await sb.from('notes').delete().eq('user_id', userId)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data
+}
