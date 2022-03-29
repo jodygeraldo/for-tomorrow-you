@@ -21,17 +21,23 @@ export async function addNote(userId: string, note: string) {
   const now = new Date().getTime()
   const expires_at = now + 24 * 60 * 60 * 1000
 
-  const { error } = await sb.from<Notes>('notes').insert([
-    {
+  const { error, data } = await sb
+    .from<Notes>('notes')
+    .insert({
       user_id: userId,
       notes: note,
       expires_at,
       inserted_at: now,
-    },
-  ])
+    })
+    .single()
 
   if (error) {
     throw new Error(error.message)
+  }
+
+  return {
+    noteId: data.id,
+    userId: data.user_id,
   }
 }
 
@@ -83,25 +89,37 @@ export async function getLogs(userId: string) {
 }
 
 export async function setFinishNote(userId: string, noteId: string) {
-  const { error } = await sb
+  const { error, data } = await sb
     .from<Notes>('notes')
     .update({ done: true })
     .eq('user_id', userId)
     .eq('id', noteId)
+    .single()
 
   if (error) {
     throw new Error(error.message)
   }
+
+  return {
+    noteId: data.id,
+    userId: data.user_id,
+  }
 }
 
 export async function deleteNote(userId: string, noteId: string) {
-  const { error } = await sb
+  const { error, data } = await sb
     .from('notes')
     .delete()
     .eq('user_id', userId)
     .eq('id', noteId)
+    .single()
 
   if (error) {
     throw new Error(error.message)
+  }
+
+  return {
+    noteId: data.id,
+    userId: data.user_id,
   }
 }
