@@ -56,3 +56,11 @@ export default function () {
     </Form>
   )
 }
+
+export function ErrorBoundary(e: Error) {
+  return (
+    <div className="mt-8">
+      <p className="text-lg text-red-500">{e.message}</p>
+    </div>
+  )
+}
