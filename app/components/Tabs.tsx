@@ -25,7 +25,7 @@ export default function Tabs() {
         <select
           id="tabs"
           name="tabs"
-          className="appearance-none block w-full px-3 py-2 border border-gray-7 rounded-md shadow-sm placeholder-gray-11 focus:outline-none focus:ring-primary-8 focus:border-primary-8 sm:text-sm bg-gray-2 text-gray-12"
+          className="block w-full appearance-none rounded-md border border-gray-7 bg-gray-2 px-3 py-2 text-gray-12 placeholder-gray-11 shadow-sm focus:border-primary-8 focus:outline-none focus:ring-primary-8 sm:text-sm"
           defaultValue={location.pathname === '/' ? 'Note' : 'Log'}
         >
           {tabs.map((tab) => (
@@ -38,14 +38,15 @@ export default function Tabs() {
           <nav className="-mb-px flex" aria-label="Tabs">
             {tabs.map((tab) => (
               <NavLink
+                prefetch="intent"
                 key={tab.name}
                 to={tab.to}
                 className={({ isActive }) =>
                   clsx(
                     isActive
                       ? 'border-primary-10 text-primary-9'
-                      : 'border-transparent text-gray-11 hover:text-gray-12 hover:border-gray-8',
-                    'w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm',
+                      : 'border-transparent text-gray-11 hover:border-gray-8 hover:text-gray-12',
+                    'w-1/2 border-b-2 py-4 px-1 text-center text-sm font-medium',
                   )
                 }
               >
