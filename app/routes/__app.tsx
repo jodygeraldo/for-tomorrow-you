@@ -1,4 +1,4 @@
-import { Form, Link, Outlet, redirect, useLocation } from 'remix'
+import { Form, Outlet, redirect } from 'remix'
 import type { LoaderFunction } from 'remix'
 import Tabs from '~/components/Tabs'
 import { requireUser, setUser } from '~/utils/auth.server'
@@ -43,10 +43,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function AppLayout() {
-  const { pathname } = useLocation()
-
-  const isAddPage = pathname === '/add'
-
   return (
     <div className="min-h-full py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-3xl">
@@ -56,23 +52,15 @@ export default function AppLayout() {
 
         <Tabs />
 
-        <div className="mt-8 flex justify-end gap-4">
-          {isAddPage ? null : (
-            <Link
-              prefetch="intent"
-              to="/add"
-              className="flex-1 rounded-md bg-primary-9 px-4 py-2 text-center text-white hover:bg-primary-10"
-            >
-              Add new note
-            </Link>
-          )}
-
-          <Form action="/logout" method="post">
-            <button className="rounded-md bg-primary-3 px-4 py-2 text-primary-11 hover:bg-primary-4 hover:text-primary-12 active:bg-primary-5">
-              Logout
-            </button>
-          </Form>
-        </div>
+        <Form
+          action="/logout"
+          method="post"
+          className="mt-8 flex w-full justify-end"
+        >
+          <button className="w-2/5 rounded-md bg-primary-3 px-4 py-2 text-primary-11 hover:bg-primary-4 hover:text-primary-12 active:bg-primary-5">
+            Logout
+          </button>
+        </Form>
 
         <Outlet />
       </div>

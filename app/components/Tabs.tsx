@@ -4,6 +4,7 @@ import { NavLink, useLocation, useNavigate } from 'remix'
 const tabs = [
   { name: 'Note', to: '/' },
   { name: 'Log', to: '/logs' },
+  { name: 'Add new notes', to: '/add' },
 ]
 
 export default function Tabs() {
