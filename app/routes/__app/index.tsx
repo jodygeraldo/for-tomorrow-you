@@ -6,6 +6,7 @@ import invariant from 'tiny-invariant'
 import { deleteNote, getNotes, setFinishNote } from '~/utils/db.server'
 import { CACHE_CONTROL } from '~/utils/http'
 import Icon from '~/components/Icon'
+import { useEffect, useState } from 'react'
 
 export enum NoteAction {
   DELETE = 'DELETE',
@@ -64,9 +65,22 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const notes = useLoaderData<LoaderData>()
+  const [optimisticNotes, setOptimisticNotes] = useState(notes)
   const fetcher = useFetcher()
 
-  return notes.map((note) => (
+  useEffect(() => {
+    const submission = fetcher.submission
+
+    if (submission) {
+      setOptimisticNotes((notes) =>
+        notes.filter(
+          ({ id }) => Number(fetcher.submission.formData.get('id')) !== id,
+        ),
+      )
+    }
+  }, [fetcher])
+
+  return optimisticNotes.map((note) => (
     <Card key={note.id} note={note.note}>
       <div className="flex min-w-fit flex-col gap-2">
         <fetcher.Form
