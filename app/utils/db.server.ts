@@ -27,6 +27,7 @@ export async function addNote(userId: string, note: string) {
       notes: note,
       expires_at,
       inserted_at: now,
+      finished_at: now,
     },
   ])
 
@@ -83,9 +84,11 @@ export async function getLogs(userId: string) {
 }
 
 export async function setFinishNote(userId: string, noteId: string) {
+  const now = new Date().getTime()
+
   const { error } = await sb
     .from<Notes>('notes')
-    .update({ done: true })
+    .update({ done: true, finished_at: now })
     .eq('user_id', userId)
     .eq('id', noteId)
 

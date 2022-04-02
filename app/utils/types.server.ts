@@ -5,4 +5,5 @@ export interface Notes {
   done: boolean
   expires_at: number
   inserted_at: number
+  finished_at: number
 }
