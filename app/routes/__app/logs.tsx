@@ -3,6 +3,7 @@ import { json, redirect, useLoaderData } from 'remix'
 import type { LoaderFunction } from 'remix'
 import { requireUser } from '~/utils/auth.server'
 import { getLogs } from '~/utils/db.server'
+import { CACHE_CONTROL } from '~/utils/http'
 
 type LoaderData = {
   id: number
@@ -19,7 +20,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const notes = await getLogs(user.id)
 
-  return json<LoaderData>(notes, 200)
+  return json<LoaderData>(notes, {
+    status: 200,
+    headers: {
+      'Cache-Control': CACHE_CONTROL.safePrefetch,
+    },
+  })
 }
 
 export default function LogPage() {

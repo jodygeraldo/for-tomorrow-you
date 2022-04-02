@@ -5,6 +5,7 @@ import type { LoaderFunction, ActionFunction } from 'remix'
 import { requireUser } from '~/utils/auth.server'
 import invariant from 'tiny-invariant'
 import { deleteNote, getNotes, setFinishNote } from '~/utils/db.server'
+import { CACHE_CONTROL } from '~/utils/http'
 
 export enum NoteAction {
   DELETE = 'DELETE',
@@ -53,7 +54,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const notes = await getNotes(user.id)
 
-  return json<LoaderData>(notes, 200)
+  return json<LoaderData>(notes, {
+    status: 200,
+    headers: {
+      'Cache-Control': CACHE_CONTROL.safePrefetch,
+    },
+  })
 }
 
 export default function Index() {
