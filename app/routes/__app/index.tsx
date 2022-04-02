@@ -1,11 +1,11 @@
-import ButtonGroup from '~/components/ButtonGroup'
 import Card from '~/components/Card'
-import { json, redirect, useLoaderData } from 'remix'
+import { json, redirect, useFetcher, useLoaderData } from 'remix'
 import type { LoaderFunction, ActionFunction } from 'remix'
 import { requireUser } from '~/utils/auth.server'
 import invariant from 'tiny-invariant'
 import { deleteNote, getNotes, setFinishNote } from '~/utils/db.server'
 import { CACHE_CONTROL } from '~/utils/http'
+import Icon from '~/components/Icon'
 
 export enum NoteAction {
   DELETE = 'DELETE',
@@ -64,11 +64,38 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const notes = useLoaderData<LoaderData>()
+  const fetcher = useFetcher()
 
   return notes.map((note) => (
     <Card key={note.id} note={note.note}>
       <div className="flex min-w-fit flex-col gap-2">
-        <ButtonGroup id={note.id} />
+        <fetcher.Form
+          method="post"
+          replace={true}
+          className="flex flex-1 items-start justify-end space-x-2"
+        >
+          <input type="hidden" name="id" value={note.id} />
+          <button
+            name="action"
+            value={NoteAction.FINISH}
+            className="group rounded-full border border-gray-7 p-2 hover:border-gray-8 focus:border-gray-8 focus:outline-none focus:ring-2 focus:ring-gray-8 focus:ring-offset-2 focus:ring-offset-gray-3"
+          >
+            <Icon
+              id="check"
+              className="h-4 w-4 text-green-600 group-hover:text-green-500"
+            />
+          </button>
+          <button
+            name="action"
+            value={NoteAction.DELETE}
+            className="group rounded-full border border-gray-7 p-2 hover:border-gray-8 focus:border-gray-8 focus:outline-none focus:ring-2 focus:ring-gray-8 focus:ring-offset-2 focus:ring-offset-gray-3"
+          >
+            <Icon
+              id="cross"
+              className="h-4 w-4 text-red-600 group-hover:text-red-500"
+            />
+          </button>
+        </fetcher.Form>
         <time
           className="self-end text-sm text-gray-11"
           dateTime={note.expiresAt}
