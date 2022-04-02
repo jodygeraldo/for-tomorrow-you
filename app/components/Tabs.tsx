@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { NavLink, useLocation, useNavigate } from 'remix'
+import { NavLink, useLocation, useNavigate } from '@remix-run/react'
 
 const tabs = [
   { name: 'Note', to: '/' },

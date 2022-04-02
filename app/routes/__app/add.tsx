@@ -1,5 +1,6 @@
-import { Form, redirect, useTransition } from 'remix'
-import type { ActionFunction } from 'remix'
+import { Form, useTransition } from '@remix-run/react'
+import { redirect } from '@remix-run/node'
+import type { ActionFunction } from '@remix-run/node'
 import { requireUser } from '~/utils/auth.server'
 import invariant from 'tiny-invariant'
 import { useEffect, useRef } from 'react'

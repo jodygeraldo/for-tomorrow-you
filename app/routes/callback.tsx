@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { useLocation, useSubmit } from 'remix'
-import type { ActionFunction } from 'remix'
+import { useLocation, useSubmit } from '@remix-run/react'
+import type { ActionFunction } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { setUser } from '~/utils/auth.server'
 import { sb } from '~/utils/supabase.server'

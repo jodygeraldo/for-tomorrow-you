@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from 'remix'
+import { createCookieSessionStorage, redirect } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 
 invariant(process.env.AUTH_COOKIE_SECRET, 'AUTH_COOKIE_SECRET is not set')

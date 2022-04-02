@@ -1,12 +1,11 @@
 import {
   Form,
-  json,
-  redirect,
   useActionData,
   useLoaderData,
   useTransition,
-} from 'remix'
-import type { LoaderFunction, ActionFunction } from 'remix'
+} from '@remix-run/react'
+import { json, redirect } from '@remix-run/node'
+import type { LoaderFunction, ActionFunction } from '@remix-run/node'
 import LoginContainer from '~/components/LoginContainer'
 import { getUserId } from '~/utils/auth.server'
 import { sb } from '~/utils/supabase.server'

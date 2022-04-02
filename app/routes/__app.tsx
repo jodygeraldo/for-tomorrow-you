@@ -1,5 +1,6 @@
-import { Form, Outlet, redirect } from 'remix'
-import type { LoaderFunction } from 'remix'
+import { Form, Outlet } from '@remix-run/react'
+import { redirect } from '@remix-run/node'
+import type { LoaderFunction } from '@remix-run/node'
 import Tabs from '~/components/Tabs'
 import { requireUser, setUser } from '~/utils/auth.server'
 import { sb } from '~/utils/supabase.server'
