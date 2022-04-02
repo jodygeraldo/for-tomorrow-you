@@ -18,7 +18,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     return redirect('/login')
   }
 
-  const notes = await getLogs(user.id)
+  const notes = (await getLogs(user.id)).sort(
+    (a, b) => b.finishedAt - a.finishedAt,
+  )
 
   return json<LoaderData>(notes, {
     status: 200,

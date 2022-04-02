@@ -13,6 +13,7 @@ function mapNotes(notes: Notes[]) {
         month: 'long',
         day: 'numeric',
       }).format(new Date(note.expires_at)),
+      finishedAt: note.finished_at,
     }
   })
 }
