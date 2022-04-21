@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import { NavLink, useLocation, useNavigate } from '@remix-run/react'
+import clsx from 'clsx'
 
 const tabs = [
   { name: 'Note', to: '/' },
@@ -12,9 +12,7 @@ export default function Tabs() {
   const navigate = useNavigate()
 
   function handleChange(e: React.ChangeEvent<HTMLFormElement>) {
-    const selected = e.target.options.selectedIndex === 0 ? '/' : '/logs'
-
-    navigate(selected)
+    navigate(e.target.value)
   }
 
   return (
@@ -27,10 +25,12 @@ export default function Tabs() {
           id="tabs"
           name="tabs"
           className="block w-full appearance-none rounded-md border border-gray-7 bg-gray-2 px-3 py-2 text-gray-12 placeholder-gray-11 shadow-sm focus:border-primary-8 focus:outline-none focus:ring-primary-8 sm:text-sm"
-          defaultValue={location.pathname === '/' ? 'Note' : 'Log'}
+          defaultValue={location.pathname}
         >
           {tabs.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
+            <option key={tab.name} value={tab.to}>
+              {tab.name}
+            </option>
           ))}
         </select>
       </form>
