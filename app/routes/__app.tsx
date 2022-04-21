@@ -1,10 +1,10 @@
-import { Form, Outlet } from '@remix-run/react'
-import { redirect } from '@remix-run/node'
 import type { LoaderFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
+import { Form, Outlet } from '@remix-run/react'
+import invariant from 'tiny-invariant'
 import Tabs from '~/components/Tabs'
 import { requireUser, setUser } from '~/utils/auth.server'
 import { sb } from '~/utils/supabase.server'
-import invariant from 'tiny-invariant'
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
@@ -48,7 +48,7 @@ export default function AppLayout() {
     <div className="min-h-full py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-3xl">
         <h1 className="text-center text-4xl font-extrabold text-primary-9 sm:text-5xl sm:tracking-tight lg:text-6xl">
-          For Tommorrow You
+          For Tomorrow You
         </h1>
 
         <Tabs />
